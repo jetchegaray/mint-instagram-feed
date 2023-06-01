@@ -1,7 +1,6 @@
 import classes from "./Modal.module.css";
 import React, { useRef, useState } from "react";
 import Pin from "../models/pin";
-import { uploadFromBuffer } from "../external/pinata-api";
 
 const Modal: React.FC<{ onAdd: (pin: Pin) => void }> = (props) => {
   const [showLabel, setShowLabel] = useState(true);
@@ -12,6 +11,7 @@ const Modal: React.FC<{ onAdd: (pin: Pin) => void }> = (props) => {
 
   const titleRef = useRef<HTMLInputElement>(null);
   const descriptionRef = useRef<HTMLInputElement>(null);
+  const priceRef = useRef<HTMLInputElement>(null);
 
   const upload_img = (event: React.ChangeEvent<HTMLInputElement>): void => {
     event.preventDefault();
@@ -57,11 +57,13 @@ const Modal: React.FC<{ onAdd: (pin: Pin) => void }> = (props) => {
   function confirmHander() {
     const titleRefEntered = titleRef.current!.value;
     const descriptionRefEntered = descriptionRef.current!.value;
+    const priceEntered = priceRef.current!.value;
 
     const pinData: Pin = {
       id: new Date().toString(),
       title: titleRefEntered,
       description: descriptionRefEntered,
+      price: +priceEntered,
       sizeImage: sizeImage as string,
       blobImage: blobImage as string,
       fileImage: fileImage as File,
@@ -165,6 +167,13 @@ const Modal: React.FC<{ onAdd: (pin: Pin) => void }> = (props) => {
               className={classes["new_pin_input"]}
               id="pin_description"
               ref={descriptionRef}
+            />
+            <input
+              placeholder="Price in ETH (min 0.001)"
+              type="number"
+              className={classes["new_pin_input"]}
+              id="pin_price"
+              ref={priceRef}
             />
           </div>
         </div>

@@ -1,25 +1,24 @@
 import React, { useState } from "react";
 import Pin from "../models/pin";
 import classes from "./Pin.module.css";
-import { uploadFromBuffer } from "../external/pinata-api";
+import useMint from "../hooks/use-mint";
 
 const PinItem: React.FC<{ pinDetails: Pin }> = (props: { pinDetails: Pin }) => {
   const [readyToMint, setReadyToMint] = useState(true);
   const [minted, setMinted] = useState(false);
+  const [urlIpfs, setUrlIpfs] = useState("");
+
+  const { mint, fileIpfsHash, isLoading, errorMessage } = useMint(
+    props.pinDetails
+  );
 
   const mintHandler = async (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
 
-    const hash: string | undefined = await uploadFromBuffer(
-      props.pinDetails.fileImage,
-      props.pinDetails.title
-    );
+    await mint(props.pinDetails.fileImage, props.pinDetails.title);
 
-    if (hash) {
-      props.pinDetails = {
-        ...props.pinDetails,
-        url: `${process.env.REACT_APP_PINATA_BASE_URL}${hash}`,
-      };
+    if (errorMessage === "") {
+      setUrlIpfs(`${process.env.REACT_APP_PINATA_BASE_URL}${fileIpfsHash}`);
       setMinted(true);
       setReadyToMint(false);
     }
@@ -71,16 +70,12 @@ const PinItem: React.FC<{ pinDetails: Pin }> = (props: { pinDetails: Pin }) => {
                   className={classes.pint_mock_icon}
                 />
               </div>
-              <span>{props.pinDetails.url}</span>
+              <span>
+                <a href={urlIpfs} target="_blank" rel="noopener noreferrer">
+                  {urlIpfs}
+                </a>
+              </span>
             </div>
-
-            {/* <div className={classes.pint_mock_icon_container}>
-            <img
-              src="./images/send.png"
-              alt="send"
-              className={classes.pint_mock_icon}
-            />
-          </div> */}
 
             <div className={classes.pint_mock_icon_container}>
               <img

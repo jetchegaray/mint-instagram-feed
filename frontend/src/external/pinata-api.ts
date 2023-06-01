@@ -1,10 +1,10 @@
-import axios, { AxiosResponse } from "axios";
-const URL = "https://api.pinata.cloud/pinning/pinFileToIPFS";
+import axios, { AxiosError, AxiosResponse } from "axios";
+import { PinataResponse } from "../models/pinata-response";
 
-const uploadFromBuffer = async (
+const uploadFileToIPFS = async (
   buffer: File,
   name: string
-): Promise<string | undefined> => {
+): Promise<PinataResponse> => {
   const formData: FormData = new FormData();
   console.log(buffer);
   formData.append("file", buffer);
@@ -20,19 +20,45 @@ const uploadFromBuffer = async (
   formData.append("pinataOptions", options);
 
   try {
-    const res: AxiosResponse = await axios.post(URL, formData, {
-      maxBodyLength: Infinity,
-      headers: {
-        "Content-Type": "multipart/form-data", //boundary=${formData.boundary}
-        pinata_api_key: process.env.REACT_APP_PINATA_API_KEY,
-        pinata_secret_api_key: process.env.REACT_APP_PINATA_API_SECRET,
-      },
-    });
+    const res: AxiosResponse = await axios.post(
+      process.env.REACT_APP_PINATA_API + "pinFileToIPFS",
+      formData,
+      {
+        maxBodyLength: Infinity,
+        headers: {
+          "Content-Type": "multipart/form-data", //boundary=${formData.boundary}
+          pinata_api_key: process.env.REACT_APP_PINATA_API_KEY,
+          pinata_secret_api_key: process.env.REACT_APP_PINATA_API_SECRET,
+        },
+      }
+    );
     console.log(res.data);
-    return res.data.IpfsHash;
+    return new PinataResponse("success", res.data.IpfsHash, "");
   } catch (error) {
     console.log(error);
+    return new PinataResponse("error", "", (error as AxiosError).message);
   }
 };
 
-export { uploadFromBuffer };
+const uploadJsonToIPFS = async (json: string): Promise<PinataResponse> => {
+  const formData: FormData = new FormData();
+  try {
+    const res: AxiosResponse = await axios.post(
+      process.env.REACT_APP_PINATA_API + "pinJSONToIPFS",
+      json,
+      {
+        headers: {
+          pinata_api_key: process.env.REACT_APP_PINATA_API_KEY,
+          pinata_secret_api_key: process.env.REACT_APP_PINATA_API_SECRET,
+        },
+      }
+    );
+    console.log(res.data);
+    return new PinataResponse("success", res.data.IpfsHash, "");
+  } catch (error) {
+    console.log(error);
+    return new PinataResponse("error", "", (error as AxiosError).message);
+  }
+};
+
+export { uploadFileToIPFS, uploadJsonToIPFS };

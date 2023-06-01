@@ -41,6 +41,15 @@
 
   background-color: #f0f0f0;
   cursor: pointer;
+  margin-bottom: 40px;
+}
+
+.pint_mock_icon_container_unconnected {
+  background-color: #e48356;
+}
+
+.pint_mock_icon_container_connected {
+  background-color: #67d64e;
 }
 
 .pint_mock_icon {
