@@ -1,7 +1,6 @@
 ## Description
 
- It is a beta version for mint to NFT all your gallery images.
- The frontend for now it is similar to Pinterest where you can upload a image, a title, description an a price. you have a board you all your pins uploaded and with the option to mint them. 
+It is a dapp to mint to NFT all your gallery images. The frontend is similar to Pinterest where you can upload a photo, a title, a description, and a price. you have a board you all your pins are uploaded and the option to mint them.
 
 ## Table of Contents
 
