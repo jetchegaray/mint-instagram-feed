@@ -28,8 +28,8 @@
     - react-scripts 5.0.1
     - axios 1.4.0
     - reactjs 18.0.2
-    - Alchemy
-
+    - [Alchemy](#https://www.alchemy.com/)
+    - [Pinata](#https://pinata.cloud/) 
 
 
 ## Environment variables 
@@ -47,8 +47,8 @@
     REACT_APP_PINATA_API_SECRET="XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
     REACT_APP_ALCHEMY_KEY="https://eth-sepolia.g.alchemy.com/v2/XXXXXXXXXXXXXXXXXXXXX"
     REACT_APP_CONTRACT_ADDRESS="0xXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
-    REACT_APP_PINATA_API_JWT="XXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
-    REACT_APP_PINATA_BASE_URL = "https://ipfs.io/ipfs/"
+    REACT_APP_PINATA_BASE_URL = "https://gateway.pinata.cloud/ipfs/"
+    REACT_APP_PINATA_API = "https://api.pinata.cloud/pinning/"
   ```
 
 
