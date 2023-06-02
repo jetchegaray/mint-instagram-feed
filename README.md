@@ -1,6 +1,6 @@
-## Description
+## Description - NFT Pinterest Feed Images Gallery
 
-It is a dapp to mint to NFT all your gallery images. The frontend is similar to Pinterest where you can upload a photo, a title, a description, and a price. you have a board you all your pins are uploaded and the option to mint them.
+It is a dapp to mint all your gallery images. The frontend is similar to Pinterest where you can upload a photo, a title, a description, and a price. you have a board you all your pins are uploaded and the option to mint them.
 
 ## Table of Contents
 
