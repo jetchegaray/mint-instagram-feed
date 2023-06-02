@@ -1,9 +1,15 @@
 import "./App.css";
-import React from "react";
 import Board from "./components/Board";
+import { ErrorProvider } from "./components/errorManager/error-context";
 
 function App() {
-  return <Board></Board>;
+  return (
+    <>
+      <ErrorProvider>
+        <Board></Board>
+      </ErrorProvider>
+    </>
+  );
 }
 
 export default App;

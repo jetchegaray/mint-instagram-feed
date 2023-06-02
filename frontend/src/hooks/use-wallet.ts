@@ -3,8 +3,7 @@ import { Maybe } from "@metamask/providers/dist/utils";
 import { useCallback, useEffect, useState } from "react";
 import { WalletResponse } from "../models/wallet-response";
 
-const useWallet = () => {
-  const [isLoading, setIsLoading] = useState(false);
+const useWallet = (setLoadingState: (state: boolean) => void) => {
   const [errorMessage, setErrorMessage] = useState("");
   const [isConnected, setIsConnected] = useState(false);
   const [addressConnected, setAddressConnected] = useState("");
@@ -46,7 +45,7 @@ const useWallet = () => {
   // };
 
   const connectWallet = useCallback(async (): Promise<WalletResponse> => {
-    setIsLoading(true);
+    setLoadingState(true);
     const ethereum = getEthereumProvider();
 
     if (!ethereum) {
@@ -73,7 +72,7 @@ const useWallet = () => {
       const addressArray: Maybe<string[]> = await ethereum?.request({
         method: "eth_requestAccounts",
       });
-      setIsLoading(false);
+      setLoadingState(false);
       if (addressArray && addressArray.length > 0) {
         setIsConnected(true);
         return new WalletResponse(addressArray[0]!, "success");
@@ -85,10 +84,10 @@ const useWallet = () => {
       setErrorMessage(
         `Connect to metamask error : ${(error as Error).message}`
       );
-      setIsLoading(false);
+      setLoadingState(false);
       return new WalletResponse("", "error");
     }
-  }, []);
+  }, [setLoadingState]);
 
   useEffect(() => {
     const ethereum = getEthereumProvider();
@@ -104,7 +103,6 @@ const useWallet = () => {
     getEthereumProvider,
     isWalletConnected: isConnected,
     addressConnected: addressConnected,
-    isLoading,
     errorMessage,
   };
 };

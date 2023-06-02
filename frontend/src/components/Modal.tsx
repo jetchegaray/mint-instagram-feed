@@ -2,7 +2,12 @@ import classes from "./Modal.module.css";
 import React, { useRef, useState } from "react";
 import Pin from "../models/pin";
 
-const Modal: React.FC<{ onAdd: (pin: Pin) => void }> = (props) => {
+type ModalParams = {
+  onAdd: (pin: Pin) => void;
+  onShowModal: (show: boolean) => void;
+};
+
+const Modal: React.FC<ModalParams> = (props) => {
   const [showLabel, setShowLabel] = useState(true);
   const [showModalPin, setShowModalPin] = useState(false);
   const [blobImage, setBlobImage] = useState<string>();
@@ -54,26 +59,45 @@ const Modal: React.FC<{ onAdd: (pin: Pin) => void }> = (props) => {
     setSizeImage(event.target.value);
   };
 
-  function confirmHander() {
-    const titleRefEntered = titleRef.current!.value;
-    const descriptionRefEntered = descriptionRef.current!.value;
-    const priceEntered = priceRef.current!.value;
+  function submitHandler(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+
+    const titleRefEntered = titleRef.current?.value;
+    const descriptionRefEntered = descriptionRef.current?.value;
+    const priceEntered = priceRef.current?.value;
+    let isValid: boolean = true;
+
+    if (!titleRef.current || !titleRefEntered) {
+      titleRef.current?.focus();
+      isValid = false;
+    }
+    if (!descriptionRef.current || !descriptionRefEntered) {
+      descriptionRef.current?.focus();
+      isValid = false;
+    }
+    if (!priceRef.current || !priceEntered) {
+      priceRef.current?.focus();
+      isValid = false;
+    }
+
+    if (!isValid) return;
 
     const pinData: Pin = {
       id: new Date().toString(),
-      title: titleRefEntered,
-      description: descriptionRefEntered,
-      price: +priceEntered,
+      title: titleRefEntered!,
+      description: descriptionRefEntered!,
+      price: +priceEntered!,
       sizeImage: sizeImage as string,
       blobImage: blobImage as string,
       fileImage: fileImage as File,
     };
 
     props.onAdd(pinData);
+    props.onShowModal(false);
   }
 
   return (
-    <div className={classes["add_pin_modal"]}>
+    <form onSubmit={submitHandler} className={classes["add_pin_modal"]}>
       <div className={classes["add_pin_container"]}>
         <div className={classes["side"]} id={classes.left_side}>
           <div className={classes["section1"]}>
@@ -147,7 +171,7 @@ const Modal: React.FC<{ onAdd: (pin: Pin) => void }> = (props) => {
                 <option value="medium">medium</option>
                 <option value="large">large</option>
               </select>
-              <button onClick={confirmHander} className={classes["save_pin"]}>
+              <button type="submit" className={classes["save_pin"]}>
                 Save
               </button>
             </div>
@@ -170,7 +194,7 @@ const Modal: React.FC<{ onAdd: (pin: Pin) => void }> = (props) => {
             />
             <input
               placeholder="Price in ETH (min 0.001)"
-              type="number"
+              type="text"
               className={classes["new_pin_input"]}
               id="pin_price"
               ref={priceRef}
@@ -178,7 +202,7 @@ const Modal: React.FC<{ onAdd: (pin: Pin) => void }> = (props) => {
           </div>
         </div>
       </div>
-    </div>
+    </form>
   );
 };
 

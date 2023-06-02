@@ -240,3 +240,11 @@
 
   background-color: transparent;
 }
+
+.error {
+  border-color: red;
+}
+
+.errorMessage {
+  color: red;
+}

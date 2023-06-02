@@ -5,17 +5,19 @@ import { ethers } from "ethers";
 import usePinata from "./use-ipfs";
 import Pin from "../models/pin";
 
-const useMint = (pinDetails: Pin) => {
-  const [isLoading, setIsLoading] = useState(false);
+const useMint = (
+  pinDetails: Pin,
+  setLoadingState: (state: boolean) => void
+) => {
   const [errorMessage, setErrorMessage] = useState("");
   const [fileIpfsHash, setFileIpfsHash] = useState("");
 
-  const { getEthereumProvider } = useWallet();
+  const { getEthereumProvider } = useWallet(setLoadingState);
   const { uploadDataIpfs } = usePinata({ pinDetails });
 
   const mint = useCallback(
     async (file: File, name: string) => {
-      setIsLoading(true);
+      setLoadingState(true);
       try {
         const ipfsHash: string = await uploadDataIpfs();
         setFileIpfsHash(ipfsHash);
@@ -48,19 +50,18 @@ const useMint = (pinDetails: Pin) => {
         await transaction.wait();
 
         alert(`Successfully listed your NFT! ${transaction.address}`);
-        setIsLoading(false);
+        setLoadingState(false);
       } catch (error) {
-        setIsLoading(false);
+        setLoadingState(false);
         setErrorMessage((error as Error).message);
       }
     },
-    [getEthereumProvider, uploadDataIpfs, pinDetails]
+    [getEthereumProvider, uploadDataIpfs, pinDetails, setLoadingState]
   );
 
   return {
     mint,
     fileIpfsHash,
-    isLoading,
     errorMessage,
   };
 };

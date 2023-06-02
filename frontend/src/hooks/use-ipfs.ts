@@ -1,5 +1,3 @@
-import axios, { AxiosError, AxiosResponse } from "axios";
-import { use } from "chai";
 import { PinataResponse } from "../models/pinata-response";
 import { uploadFileToIPFS, uploadJsonToIPFS } from "../external/pinata-api";
 import Pin from "../models/pin";

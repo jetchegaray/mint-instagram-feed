@@ -6,7 +6,6 @@ const uploadFileToIPFS = async (
   name: string
 ): Promise<PinataResponse> => {
   const formData: FormData = new FormData();
-  console.log(buffer);
   formData.append("file", buffer);
 
   const metadata = JSON.stringify({
@@ -41,7 +40,6 @@ const uploadFileToIPFS = async (
 };
 
 const uploadJsonToIPFS = async (json: string): Promise<PinataResponse> => {
-  const formData: FormData = new FormData();
   try {
     const res: AxiosResponse = await axios.post(
       process.env.REACT_APP_PINATA_API + "pinJSONToIPFS",

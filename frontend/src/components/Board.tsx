@@ -1,44 +1,49 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import useWallet from "../hooks/use-wallet";
 import Pin from "../models/pin";
 import { WalletResponse } from "../models/wallet-response";
-
 import classes from "./Board.module.css";
+import { ErrorContext } from "./errorManager/error-context";
+import IsLoading from "./loading/LoadingWrapper";
 import Modal from "./Modal";
 import PinItem from "./Pin";
 
-const Board: React.FC = (props) => {
+const Board: React.FC<{ setLoadingState: (state: boolean) => void }> = (props: {
+  setLoadingState: (state: boolean) => void;
+}) => {
   const [pins, setPins] = useState<Pin[]>([]);
   const [showModal, setShowModal] = useState(false);
-  const [connectionStatus, setConectionStatus] = useState("");
   const [connectionAddress, setConectionAddress] = useState("");
+  const { showError } = useContext(ErrorContext);
 
-  const {
-    connectWallet,
-    isWalletConnected,
-    addressConnected,
-    isLoading,
-    errorMessage,
-  } = useWallet();
+  const { connectWallet, isWalletConnected, addressConnected, errorMessage } =
+    useWallet(props.setLoadingState);
 
   const addPinHandler = (pinDetails: Pin) => {
     setPins((prevPins) => {
       return prevPins.concat(pinDetails);
     });
-    setShowModal(false);
+  };
+
+  const removePinHandler = (id: string) => {
+    setPins((prevPins) => {
+      return prevPins.filter((p) => p.id !== id);
+    });
   };
 
   const connectWalletHandler = async () => {
     const response: WalletResponse = await connectWallet();
-    setConectionStatus(response.status);
     setConectionAddress(response.address);
   };
 
-  //debugger
   useEffect(() => {
     setConectionAddress(addressConnected);
     console.log(pins);
-  }, [pins]);
+  }, [pins, addressConnected]);
+
+  useEffect(() => {
+    showError(errorMessage);
+  }, [errorMessage]);
 
   return (
     <>
@@ -77,21 +82,27 @@ const Board: React.FC = (props) => {
 
         <div className={classes["pin_container"]}>
           {pins.map((pin) => (
-            <PinItem pinDetails={pin} key={pin.id}></PinItem>
+            <PinItem
+              pinDetails={pin}
+              key={pin.id}
+              onRemove={removePinHandler}
+            ></PinItem>
           ))}
         </div>
         <div
           onClick={(event) =>
             (event.target as Element).className === "add_pin_modal" &&
-            setShowModal(false)
+            !showModal
           }
           className="add_pin_modal_container"
         >
-          {showModal && <Modal onAdd={addPinHandler} />}
+          {showModal && (
+            <Modal onAdd={addPinHandler} onShowModal={setShowModal} />
+          )}
         </div>
       </div>
     </>
   );
 };
 
-export default Board;
+export default IsLoading(Board, "Loading the pins...");
