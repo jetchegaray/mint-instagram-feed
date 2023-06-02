@@ -2,13 +2,6 @@
 
  It is a beta version for mint to NFT all your gallery images.
  The frontend for now it is similar to Pinterest where you can upload a image, a title, description an a price. you have a board you all your pins uploaded and with the option to mint them. 
- 
- Notes :: I was thinking to integrate pinterest first but it is an overwhelming task in terms of burocracy, I did the instagram integration a few years ago in another proyect and nowadays is even worst. So I've limited to make the pinterest clone for the frontend. 
-
-## TODO
- - Use Formic to form validations (on progress)
- - Get list of all your nft's in the frontend calling the list method of the smart contract
-
 
 ## Table of Contents
 
@@ -17,7 +10,8 @@
 3. [Installation & Running](#Installation-&-Running)
 4. [Running the app](#Running-the-app)
 5. [Project Layout (Brief Explanation Frontend)](#Project-Layout-(Brief-Explanation-Frontend))
-6. [Demo](#Demo)
+6. [TODO](#TODO)
+7. [Demo](#Demo)
 
 ## Technology Stack
     - nodejs 18.16.0
@@ -72,7 +66,6 @@ $ npm install
 $npm run start
 ```
 
-
  ## Project Layout (Brief Explanation Frontend)
  ```
 ├── .env (Make sure to create this file locally and fill the env vars)
@@ -89,8 +82,13 @@ $npm run start
 │   └── resources (here you should paste the custom NFT contract json, which includes the abi and the address)
 └── 
 ``` 
+  
+## TODO
+ - Use Formic to form validations (on progress)
+ - Get list of all your nft's in the frontend calling the list method of the smart contract
+ - bugs & technical debts 
  
  ## Demo 
  
-[here](#https://nft-pinterest-feed.vercel.app)
+[here](https://nft-pinterest-feed.vercel.app)
  
