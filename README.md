@@ -75,7 +75,6 @@ $npm run start
 
  ## Project Layout (Brief Explanation Frontend)
  ```
- .
 ├── .env (Make sure to create this file locally and fill the env vars)
 ├── App.tsx (main root)
 ├── react-app-env.d.ts (defined global types for ethers & typescript)
@@ -93,5 +92,5 @@ $npm run start
  
  ## Demo 
  
- [Here](#https://nft-pinterest-feed.vercel.app/)
+[here](#https://nft-pinterest-feed.vercel.app)
  
