@@ -19,6 +19,9 @@ const useMint = (
     async (file: File, name: string) => {
       setLoadingState(true);
       try {
+        setErrorMessage(
+          "You must install Metamask, a virtual Ethereum wallet, in your browser."
+        );
         const ipfsHash: string = await uploadDataIpfs();
         setFileIpfsHash(ipfsHash);
         const ethereum = getEthereumProvider();
@@ -54,6 +57,7 @@ const useMint = (
       } catch (error) {
         setLoadingState(false);
         setErrorMessage((error as Error).message);
+        console.log((error as Error).message);
       }
     },
     [getEthereumProvider, uploadDataIpfs, pinDetails, setLoadingState]

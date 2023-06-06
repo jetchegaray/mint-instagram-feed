@@ -44,7 +44,9 @@ const useWallet = (setLoadingState: (state: boolean) => void) => {
   //   }
   // };
 
-  const connectWallet = useCallback(async (): Promise<WalletResponse> => {
+  const connectWallet = useCallback(async (): Promise<
+    WalletResponse | undefined
+  > => {
     setLoadingState(true);
     const ethereum = getEthereumProvider();
 
@@ -52,7 +54,7 @@ const useWallet = (setLoadingState: (state: boolean) => void) => {
       setErrorMessage(
         "You must install Metamask, a virtual Ethereum wallet, in your browser."
       );
-      throw new Error("You must install Metamask");
+      return;
     }
 
     const chainId = await ethereum?.request({
@@ -66,7 +68,6 @@ const useWallet = (setLoadingState: (state: boolean) => void) => {
         params: [{ chainId: "0xaa36a7" }],
       });
     }
-
     try {
       // I use ethereum provider's built-in method
       const addressArray: Maybe<string[]> = await ethereum?.request({

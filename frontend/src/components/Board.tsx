@@ -32,8 +32,8 @@ const Board: React.FC<{ setLoadingState: (state: boolean) => void }> = (props: {
   };
 
   const connectWalletHandler = async () => {
-    const response: WalletResponse = await connectWallet();
-    setConectionAddress(response.address);
+    const response: WalletResponse | undefined = await connectWallet();
+    if (response) setConectionAddress(response.address);
   };
 
   useEffect(() => {

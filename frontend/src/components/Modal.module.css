@@ -242,9 +242,9 @@
 }
 
 .error {
-  border-color: red;
+  border-bottom: 2px solid #b81414 !important;
 }
 
-.errorMessage {
-  color: red;
+.error_message {
+  color: #b81414 !important;
 }
